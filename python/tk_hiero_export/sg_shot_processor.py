@@ -57,11 +57,21 @@ class ShotgunShotProcessorUI(ShotgunHieroObjectBase, ShotProcessorUI, CollatingE
         ShotProcessorUI.__init__(self, preset)
         CollatingExporterUI.__init__(self)
 
+        # Register an event handler for if/when the project is saved
+        hiero.core.events.registerInterest('kAfterProjectSave', self.afterProjectSavedCallback)
+
     def displayName(self):
         return "Process as Shotgun Shots"
 
     def toolTip(self):
         return "Process as Shotgun Shots generates output on a per-shot basis and logs it in Shotgun."
+
+    def afterProjectSavedCallback(self, event):
+        """
+        """
+        # Handle custom properties from the customize_export_ui hook.
+        version_number = self._get_custom_properties("get_default_version_number") or 1
+        self._preset.properties()["versionIndex"] = int(version_number)
 
     def populateUI(self, *args, **kwargs):
         """
@@ -843,6 +853,10 @@ class ShotgunShotProcessorPreset(ShotgunHieroObjectBase, FnShotProcessor.ShotPro
         ) or []
 
         default_properties.update({d["name"]: d["value"] for d in custom_properties})
+
+        # Set the default version number and padding
+        self.properties()['versionIndex'] = self._get_custom_properties("get_default_version_number") or 1
+        self.properties()['versionPadding'] = self.app.get_setting('default_version_padding') or 3
 
         # finally, update the properties based on the properties passed to the constructor
         explicit_constructor_properties = properties.get('shotgunShotCreateProperties', {})

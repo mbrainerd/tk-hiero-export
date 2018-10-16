@@ -51,6 +51,13 @@ class HieroCustomizeExportUI(HookBaseClass):
         """
         return None
 
+    def get_default_version_number(self):
+        """
+        Gets the default version number to set for the preset, which will populate
+        the ShotProcessor UI on open.
+        """
+        return 1
+
     def get_shot_processor_ui_properties(self):
         """
         Gets a list of property dictionaries describing the custom properties
