@@ -163,6 +163,33 @@ class ShotgunShotProcessorUI(ShotgunHieroObjectBase, ShotProcessorUI, CollatingE
         if custom_widget is not None:
             layout.addWidget(custom_widget)
 
+    def createVersionWidget(self):
+        """ Create a widget for selecting the version number for export. """
+        widget = QtGui.QWidget()
+        layout = QtGui.QHBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+        widget.setLayout(layout)
+
+        # Version custom versionSpinBox widget - allows user to specify padding
+        versionToolTip = "Set the version number for files/scripts which include the {version} token in the path.\nThis box sets the version number string (#) in the form: v#, e.g. 01 > v01.\nUse the +/- to control padding e.g. v01 / v0001."
+
+        versionLayout = QtGui.QHBoxLayout()
+
+        versionLabel = QtGui.QLabel("Version token number:")
+        layout.addWidget(versionLabel)
+
+        versionSpinBox = hiero.ui.VersionWidget()
+        versionSpinBox.setToolTip(versionToolTip)
+        versionSpinBox.setValue(self._preset.properties()["versionIndex"])
+        versionSpinBox.setPadding(self._preset.properties()["versionPadding"])
+        versionSpinBox.setEnabled(not self.app.get_setting('disable_version_spinner'))
+        versionSpinBox.valueChanged.connect(self.onVersionIndexChanged)
+        versionSpinBox.paddingChanged.connect(self.onVersionPaddingChanged)
+        layout.addWidget(versionSpinBox)
+        layout.addStretch()
+
+        return widget
+
     def _build_cut_type_layout(self, properties):
         """
         Returns layout with a Label and QComboBox with a list of cut types.
@@ -855,8 +882,8 @@ class ShotgunShotProcessorPreset(ShotgunHieroObjectBase, FnShotProcessor.ShotPro
         default_properties.update({d["name"]: d["value"] for d in custom_properties})
 
         # Set the default version number and padding
-        self.properties()['versionIndex'] = self._get_custom_properties("get_default_version_number") or 1
-        self.properties()['versionPadding'] = self.app.get_setting('default_version_padding') or 3
+        self.properties()['versionIndex'] = self._get_custom_properties("get_default_version_number")
+        self.properties()['versionPadding'] = self.app.get_setting('default_version_padding')
 
         # finally, update the properties based on the properties passed to the constructor
         explicit_constructor_properties = properties.get('shotgunShotCreateProperties', {})

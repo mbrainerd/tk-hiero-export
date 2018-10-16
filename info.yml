@@ -71,6 +71,17 @@ configuration:
                      with the Shot."
         default_value: "[['step.Step.code', 'is', 'Comp']]"
 
+    # UI settings
+    disable_version_spinner:
+        type: bool
+        description: A flag whether to disable the ability to manually set the version number.
+        default_value: False
+
+    default_version_padding:
+        type: int
+        description: The default version number padding to use. Default is 3.
+        default_value: 3
+
     # hooks
     hook_translate_template:
         type: hook
