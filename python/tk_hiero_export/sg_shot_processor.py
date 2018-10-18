@@ -137,7 +137,7 @@ class ShotgunShotProcessorUI(ShotgunHieroObjectBase, ShotProcessorUI, CollatingE
             cut_type_layout = self._build_cut_type_layout(properties)
             shotgun_layout.addLayout(cut_type_layout)
 
-        shotgun_layout.addStretch()
+        shotgun_layout.setSizeConstraint(QtGui.QLayout.SetFixedSize)
 
         # add default settings from baseclass below
         default = QtGui.QWidget()
@@ -182,7 +182,7 @@ class ShotgunShotProcessorUI(ShotgunHieroObjectBase, ShotProcessorUI, CollatingE
         versionSpinBox.setToolTip(versionToolTip)
         versionSpinBox.setValue(self._preset.properties()["versionIndex"])
         versionSpinBox.setPadding(self._preset.properties()["versionPadding"])
-        versionSpinBox.setEnabled(not self.app.get_setting('disable_version_spinner'))
+        versionSpinBox.setReadOnly(self.app.get_setting('disable_version_spinner'))
         versionSpinBox.valueChanged.connect(self.onVersionIndexChanged)
         versionSpinBox.paddingChanged.connect(self.onVersionPaddingChanged)
         layout.addWidget(versionSpinBox)
