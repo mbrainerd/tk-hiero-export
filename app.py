@@ -145,6 +145,7 @@ class HieroExport(Application):
         # Add our default preset
         self._old_AddDefaultPresets_fn = hiero.core.taskRegistry._defaultPresets
         hiero.core.taskRegistry.setDefaultPresets(self._add_default_presets)
+        hiero.core.taskRegistry.addDefaultPresets(overwrite=False)
 
 
     def _add_default_presets(self, overwrite):
