@@ -38,7 +38,7 @@ class ShotgunHieroObjectBase(object):
     def app(self):
         return self._app
 
-    def _get_custom_properties(self, get_method):
+    def _get_custom_properties(self, get_method, cache_result=True):
         """
         Gets a list of custom property descriptions from the customize_export_ui
         hook, calling the hook method provided. This method will cache the
@@ -61,13 +61,15 @@ class ShotgunHieroObjectBase(object):
         # We key off of the method name since we allow for different
         # properties and custom widgets per exporter type.
         if get_method not in self._custom_property_definitions:
-            self._custom_property_definitions[get_method] = self.app.execute_hook_method(
+            result = self.app.execute_hook_method(
                 "hook_customize_export_ui",
                 get_method,
                 base_class=HieroCustomizeExportUI,
             )
+            if cache_result:
+                self._custom_property_definitions[get_method] = result
 
-        return self._custom_property_definitions[get_method]
+        return result
 
     def _get_custom_widget(self, parent, create_method, get_method, set_method, properties=None):
         """

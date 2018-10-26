@@ -64,7 +64,7 @@ class ShotgunShotProcessorUI(ShotgunHieroObjectBase, ShotProcessorUI, CollatingE
         """
         """
         # Set the default version number and padding
-        self._preset.properties()['versionIndex'] = self._get_custom_properties("get_default_version_number")
+        self._preset.properties()['versionIndex'] = self._get_custom_properties("get_default_version_number", False)
         self._preset.properties()['versionPadding'] = self.app.get_setting('default_version_padding')
         self.app.log_debug("updateVersionInfo() -> self._preset.properties()['versionIndex']: %d" % self._preset.properties()["versionIndex"])
 
