@@ -854,6 +854,9 @@ class ShotgunShotProcessorPreset(ShotgunHieroObjectBase, FnShotProcessor.ShotPro
     Handles presets for the shot processor.
     """
     def __init__(self, name, properties):
+        # First get any customized preset properties
+        properties.update(self._get_custom_properties("get_default_preset_properties"))
+
         FnShotProcessor.ShotProcessorPreset.__init__(self, name, properties)
 
         self._parentType = ShotgunShotProcessor

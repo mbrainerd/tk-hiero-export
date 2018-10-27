@@ -58,6 +58,14 @@ class HieroCustomizeExportUI(HookBaseClass):
         """
         return 1
 
+    def get_default_preset_properties(self):
+        """
+        Gets a dictionary of default preset properties
+
+        :returns: A dictionary of default preset properties
+        """
+        return {"startFrameSource": "Custom", "cutLength": True}
+
     def get_shot_processor_ui_properties(self):
         """
         Gets a list of property dictionaries describing the custom properties
