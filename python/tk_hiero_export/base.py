@@ -60,7 +60,8 @@ class ShotgunHieroObjectBase(object):
 
         # We key off of the method name since we allow for different
         # properties and custom widgets per exporter type.
-        if get_method not in self._custom_property_definitions:
+        result = self._custom_property_definitions.get(get_method)
+        if not result:
             result = self.app.execute_hook_method(
                 "hook_customize_export_ui",
                 get_method,
